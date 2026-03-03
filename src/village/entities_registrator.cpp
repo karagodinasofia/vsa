@@ -6,7 +6,8 @@
 
 namespace vsa::village {
 
-const ResidentRegistrator<ResidentBaker> registrator_baker;
-const ResidentRegistrator<ResidentMiner> registrator_miner; 
-const ResidentRegistrator<ResidentBlacksmith> registrator_blacksmith;
+const static ResidentRegistrator<ResidentBaker> r_rb;
+const static ResidentRegistrator<ResidentMiner> r_rm;
+const static ResidentRegistrator<ResidentBlacksmith> r_rbs;
+
 }

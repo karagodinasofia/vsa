@@ -85,12 +85,6 @@ void ConfigurationWindow::render()
                      0,
                      0,
                      1);
-    
-    ImGui::DragInt("max child",
-                     &m_config.population.initial_max_children,
-                     1,
-                     0,
-                     90);
                      
     ImGui::SeparatorText("Residents");
 

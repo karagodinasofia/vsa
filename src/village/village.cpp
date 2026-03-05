@@ -30,14 +30,27 @@ sim::SimulationDataPoint Village::iterate(sim::SimulationDataGlobal& global)
     // Consume (collect requirements)
     // Eat
     // Produce
+    
+    sim::SimulationDataPoint p;
+
+    std::size_t death_today = 0;
 
     for (std::size_t i = 0; i < m_residents.size(); ++i) {
         auto& resident = m_residents.at(i);
+        if (resident->is_dead()) { death_today++; }
         resident->iterate();
     }
     for (auto r : m_residents) {
         if (r->is_dead()) { r->remove_relations(); }
     }
+    for (std::size_t i = 0; i < m_residents.size(); ++i) {
+        auto& resident = m_residents.at(i);
+        if (resident->is_dead()) { death_today++; }
+    }
+    for (auto r : m_residents) {
+        if (r->is_dead()) { r->remove_relations(); }
+    }
+
     std::erase_if(m_residents, [](const std::shared_ptr<Resident>& r) { return r->is_dead(); });
     std::erase_if(m_residents_m, [](const std::shared_ptr<Resident>& r) { return r->is_dead(); });
     std::erase_if(m_residents_f, [](const std::shared_ptr<Resident>& r) { return r->is_dead(); });
@@ -76,7 +89,8 @@ sim::SimulationDataPoint Village::iterate(sim::SimulationDataGlobal& global)
     }
 
     // Generate statistics data
-    sim::SimulationDataPoint p;
+    p.m_death_today = death_today;
+    p.m_fer_tility_today = m_couples.size() * VillageConfig::get_config().population.child_creation_probability_per_day;
     p.m_population = m_residents.size();
     p.m_males = m_residents_m.size();
     p.m_females = m_residents_f.size();
